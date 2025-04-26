@@ -1,0 +1,7 @@
+{
+  "UniqueModName": "NBKRedSpy_SkipDaysCommand",
+  "Assemblies": [
+    "SkipDaysCommand.dll"
+  ],
+  "Dependencies": []
+}
