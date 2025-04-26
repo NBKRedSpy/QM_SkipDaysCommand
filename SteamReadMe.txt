@@ -14,7 +14,7 @@ The mod will log the process to the Player.log.
 
 For visual feedback, the [i]sandbox[/i] can be open while time is being processed.  The sandbox does not have much of a performance impact.
 
-For slightly faster processing, keep the sandbox screen disabled keep the console open.  The latter will prevent the ship's orbit from animating.
+For slightly faster processing keep the console open and do not show the sandbox screen.
 
 [h1]Support[/h1]
 
