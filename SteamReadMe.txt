@@ -1,12 +1,12 @@
-[h1]Quasimorph SkipDaysCommand[/h1]
+[h1]Quasimorph Fast Forward Time[/h1]
 
 
-A debugging utility to fast forward the game's time by X number of days, as quickly as the game can process.
+A debugging utility to fast forward the game's time by X number of days or hours, as quickly as the game can process.
 Can only be run while a game is loaded and is in space.
 
-Usage: `skip-days 30'
+Usage:
 
-Use [i]skip-days[/i] or the alias [i]sd[/i]
+[i]skip-days 30' [/i]skip-days 8h'
 
 The mod will log the process to the Player.log.
 
@@ -24,3 +24,10 @@ Thanks!
 [h1]Source Code[/h1]
 
 Source code is available on GitHub at https://github.com/NBKRedSpy/QM_SkipDaysCommand
+
+[h1]Change Log[/h1]
+
+[h2]1.1.0[/h2]
+[list]
+[*]Added hours option with the 'h' suffix
+[/list]

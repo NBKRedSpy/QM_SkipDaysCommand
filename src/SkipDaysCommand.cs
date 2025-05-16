@@ -20,7 +20,7 @@ namespace SkipDaysCommand
     {
         public static string Help(string command, bool verbose)
         {
-            return "Skips game time X number of days. Example: 'skip-days 30'.  alias: 'sd'";
+            return "Skips game time X number of days or hours.  Use a 'h' suffix for hours.  Example: 'skip-days 30' or 'skip-days 8h.  alias: 'sd'";
         }
 
         private static GameObject _SkipDayProcess = null;
@@ -28,53 +28,72 @@ namespace SkipDaysCommand
         public string Execute(string[] tokens)
         {
 
+            if (_SkipDayProcess != null)
+            {
+                return "This command is currently running.";
+            }
+
             if (tokens.Length == 0)
             {
                 return "Please provide a number of days to skip.";
             }
 
-            if (!int.TryParse(tokens[0], out int days))
+            if (tokens.Length > 1)
+            {
+                return "Too many arguments. Please provide only one number of days to skip.";
+            }
+
+            string timeParameter = tokens[0].Trim();
+
+            int hours = 0;
+            int days = 0;
+
+
+            //Check if there is a h suffix for hours
+            if (timeParameter.EndsWith("h", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!int.TryParse(timeParameter.Substring(0, timeParameter.Length - 1), out hours))
+                {
+                    return "Invalid number of hours value.";
+                }
+            }
+            else if (!int.TryParse(timeParameter, out days))
             {
                 return "Invalid number of days value.";
             }
 
-            if (_SkipDayProcess != null)
-            {
-                return "This command is already running.";
-            }
-
             _SkipDayProcess = new GameObject();
             SkipDaysCommand command = _SkipDayProcess.AddComponent<SkipDaysCommand>();
-            command.StartCoroutine(SkipDays(days));
+            command.StartCoroutine(SkipDays(days * 24 + hours));
 
-            return "The process is now running in the background.";
+            return "The process is now running in the background.  Status is logged in the Unity Player.log";
         }
 
-        public static IEnumerator SkipDays(int days)
+        public static IEnumerator SkipDays(int hours)
         {
 
             try
             {
                 int i = 0;
-                while (i < days)
+                while (i < hours)
                 {
-                    //Keeps the UI's date simple as the game always has 4 weeks in a month.
-                    int skipDays = 7;
+                    //7 day blocks seem to be about right for processing.
+                    int skipHours = 7 * 24;  
 
-                    if (i + skipDays > days)
+                    if (i + skipHours > hours)
                     {
-                        skipDays = days - i;
+                        skipHours = hours - i;
                     }
 
-                    i += skipDays;
+                    i += skipHours;
 
                     //This is the same code as MGSC.SandboxDebugWindow.SkipWeekButtonOnClick(MGSC.CommonButton, int)
                     SpaceGameMode instance = SingletonMonoBehaviour<SpaceGameMode>.Instance;
                     DateTime time = instance.SpaceTime.Time;
-                    instance.SpaceTime.Time = instance.SpaceTime.Time.AddDays(skipDays);
+                    instance.SpaceTime.Time = instance.SpaceTime.Time.AddHours(skipHours);
                     instance.SpaceTime.DeltaTime = (float)(instance.SpaceTime.Time - time).TotalSeconds;
 
-                    Plugin.Logger.Log($"Skip Day {i}");
+                    Plugin.Logger.Log($"Skip Day {i / 24}");
 
                     yield return null;
                 }
