@@ -77,8 +77,9 @@ namespace SkipDaysCommand
                 int i = 0;
                 while (i < hours)
                 {
-                    //7 day blocks seem to be about right for processing.
-                    int skipHours = 7 * 24;  
+                    //Using 24 hours as faction production *only* happens on Mondays as per the code.
+                    //  The Monday check can be found here: MGSC.StationSystem.StationsAddItemsTick()
+                    int skipHours = 24;  
 
                     if (i + skipHours > hours)
                     {

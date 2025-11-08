@@ -27,6 +27,11 @@ Source code is available on GitHub at https://github.com/NBKRedSpy/QM_SkipDaysCo
 
 [h1]Change Log[/h1]
 
+[h2]1.1.1[/h2]
+[list]
+[*]Fix: Station item creation was not being called as the game looks for the day to be Monday rather than checking if x amount of time has passed.
+[/list]
+
 [h2]1.1.0[/h2]
 [list]
 [*]Added hours option with the 'h' suffix
