@@ -2,6 +2,8 @@
 
 ![thumbnail icon](media/thumbnail.png)
 
+**WARNING**: Using console commands will disable achievements.
+
 A debugging utility to fast forward the game's time by X number of days or hours, as quickly as the game can process.
 Can only be run while a game is loaded and is in space.
 

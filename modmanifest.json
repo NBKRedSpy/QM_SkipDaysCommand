@@ -3,5 +3,10 @@
   "Assemblies": [
     "SkipDaysCommand.dll"
   ],
-  "Dependencies": []
+  "Dependencies": [],
+    "SteamTags": [
+    "1.0",
+    "Utility"
+  ]
+
 }
