@@ -72,60 +72,38 @@ namespace SkipDaysCommand
         public static IEnumerator SkipDays(int hours)
         {
 
-            SpaceTime spaceTime = Bootstrap._state.Get<SpaceTime>();
-            TimeScale originalTime = spaceTime.TimeScale;
-            State state = Bootstrap._state;
-
             try
             {
-                SpaceGameMode instance = SingletonMonoBehaviour<SpaceGameMode>.Instance;
-                DateTime targetTime = instance.SpaceTime.Time.AddHours(hours);
-
-                instance.SpaceTime.TimeScale = TimeScale.X100;
-                Time.timeScale = 150;
-
-                //Hide, or the time will not change.
-                UI.Hide<DevConsole>();
-
-                yield return null;
-
-                int lastDay = 0;
-
-                while (targetTime > instance.SpaceTime.Time)
+                int i = 0;
+                while (i < hours)
                 {
-                    int currentDay = ((int)(targetTime - instance.SpaceTime.Time).TotalDays);
+                    //Using 24 hours as faction production *only* happens on Mondays as per the code.
+                    //  The Monday check can be found here: MGSC.StationSystem.StationsAddItemsTick()
+                    int skipHours = 24;  
 
-                    if (currentDay != lastDay)
+                    if (i + skipHours > hours)
                     {
-                        lastDay = currentDay;
-                        Plugin.Logger.Log($"Skip Day {currentDay}");
+                        skipHours = hours - i;
                     }
 
-                    //Check if the user toggled the console.
-                    if(UI.IsShowing<DevConsole>())
-                    {
-                        string message = $"User toggled the console.  Stopping the skip days process.  Days unprocessed {currentDay}";
-                        Plugin.Logger.Log(message);
-                        UI.Get<DevConsole>()?.PrintText(message);
+                    i += skipHours;
 
-                        break;
-                    }   
+                    //This is the same code as MGSC.SandboxDebugWindow.SkipWeekButtonOnClick(MGSC.CommonButton, int)
+                    SpaceGameMode instance = SingletonMonoBehaviour<SpaceGameMode>.Instance;
+                    DateTime time = instance.SpaceTime.Time;
+                    instance.SpaceTime.Time = instance.SpaceTime.Time.AddHours(skipHours);
+                    instance.SpaceTime.DeltaTime = (float)(instance.SpaceTime.Time - time).TotalSeconds;
+
+                    Plugin.Logger.Log($"Skip Day {i / 24}");
 
                     yield return null;
                 }
             }
             finally
             {
-                Time.timeScale = 1;
-                spaceTime.TimeScale = originalTime;
-
                 GameObject gameObject = _SkipDayProcess;
                 _SkipDayProcess = null;
                 GameObject.Destroy(gameObject);
-
-                UI.Chain<DevConsole>().Show();
-
-                Plugin.Logger.Log("Skip days process completed.");
             }
         }
 

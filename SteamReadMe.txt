@@ -8,17 +8,15 @@ Can only be run while a game is loaded and is in space.
 
 Usage:
 
-[i]skip-days 30[/i]
-[i]skip-days 8h[/i]
+[i]skip-days 30' [/i]skip-days 8h'
 
 The mod will log the process to the Player.log.
 
-[h1]Important[/h1]
+[h1]Notes[/h1]
 
-Since the game will not allow time to pass when the dev console is open, this mod will close the dev console and log the process in the Player.log.
-Once completed, the mod will re-open the console.
+For visual feedback, the [i]sandbox[/i] can be open while time is being processed.  The sandbox does not have much of a performance impact.
 
-Opening the console will abort forwarding time.
+For slightly faster processing keep the console open and do not show the sandbox screen.
 
 [h1]Support[/h1]
 
@@ -30,11 +28,6 @@ Thanks!
 Source code is available on GitHub at https://github.com/NBKRedSpy/QM_SkipDaysCommand
 
 [h1]Change Log[/h1]
-
-[h2]2.0.0[/h2]
-[list]
-[*]Changed to use Unity TimeScale instead of partially emulated days.
-[/list]
 
 [h2]1.1.1[/h2]
 [list]
